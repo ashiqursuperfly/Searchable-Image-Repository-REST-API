@@ -1,0 +1,31 @@
+server {
+    listen 80;
+    server_name 127.0.0.1;
+    client_max_body_size 24000M;
+    return 301 https://$server_name$request_uri;
+}
+
+server {
+
+    client_max_body_size 24000M;
+
+    location /static {
+        alias /vol/static;
+    }
+
+    location / {
+        uwsgi_pass app:8000;
+        include /etc/nginx/uwsgi_params;
+    }
+
+    listen 443 ssl;
+    server_name 127.0.0.1;
+
+    ssl_certificate /etc/nginx/ssl/ssl-debug.crt;
+    ssl_certificate_key /etc/nginx/ssl/ssl-debug.key;
+
+
+    add_header Strict-Transport-Security max-age=31536000 always;
+
+
+}
