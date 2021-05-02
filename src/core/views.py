@@ -10,6 +10,6 @@ from .tasks import add
 )
 @api_view(['GET'])
 def index(request):
-    task = add.apply_async((2, 3), countdown=5)
-    return Response({'data': str(task)})
+    t = add.delay(2, 3)
+    return Response({'data': str(t)})
 

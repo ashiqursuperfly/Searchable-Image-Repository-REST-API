@@ -12,5 +12,5 @@ def add(x, y):
 
 
 @task(name="test_task")
-def test_task(data):
+def test_task(self, data):
     logger.info("executing test task")
