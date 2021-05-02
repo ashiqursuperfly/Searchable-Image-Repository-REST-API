@@ -8,11 +8,10 @@ RUN pip install --upgrade pip
 COPY ./requirements.txt /requirements.txt
 # packages required for setting up WSGI
 RUN apt-get update
-RUN apt-get install -y --no-install-recommends gcc libc-dev python3-dev default-libmysqlclient-dev rabbitmq-server
-# RUN service rabbitmq-server enable
-RUN service rabbitmq-server start
+RUN apt-get install -y --no-install-recommends gcc libc-dev python3-dev default-libmysqlclient-dev
 
 RUN pip install -r /requirements.txt
+# RUN service rabbitmq-server start
 
 RUN mkdir /app
 COPY ./src /app

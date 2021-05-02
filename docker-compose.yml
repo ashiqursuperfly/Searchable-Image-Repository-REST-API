@@ -3,6 +3,15 @@ version: '3.7'
 
 services:
 
+  rabbit:
+    image: rabbitmq:3.7-management
+    restart: always
+    ports:
+      - "5672:5672"  # we forward this port because it's useful for debugging
+      - "15672:15672"  # here, we can access rabbitmq management plugin
+    env_file:
+      - .debug.env
+
   db:
     image: mysql:5.7
     ports:
@@ -23,8 +32,11 @@ services:
       - development_static_data:/vol/web
     depends_on:
       - db
+      - rabbit
     expose:
       - "443"
+    links:
+      - rabbit
     env_file:
       - .debug.env
 
