@@ -49,7 +49,7 @@ class Params:
     detail = 'detail'
     content = 'content'
     error = 'error'
-    auth = 'authorization'
+    auth = 'auth'
     img = 'img'
     user = 'user'
     username = 'username'
@@ -71,8 +71,7 @@ def error_response(msg=ErrorMsg.unknown_error(), code=status.HTTP_404_NOT_FOUND)
 
 
 class OpenApiParams:
-    content_type_multi_part_body = OpenApiParameter(name=Params.content_type, location=OpenApiParameter.HEADER, type=OpenApiTypes.STR)
-    authorization = OpenApiParameter(name=Params.auth, location=OpenApiParameter.HEADER, type=OpenApiTypes.STR, description="Expected Format:- Token {authtoken}")
+    authorization = OpenApiParameter(name=Params.auth, location=OpenApiParameter.HEADER, type=OpenApiTypes.STR, description="Expected Format:- Bearer {authtoken}")
 
 
 class OpenApiResponse:
@@ -100,7 +99,7 @@ class OpenApiResponse:
             }
         ),
         401: inline_serializer(
-            name="Unauthorized",
+            name="bad request",
             fields={
                 "detail": serializers.CharField()
             }

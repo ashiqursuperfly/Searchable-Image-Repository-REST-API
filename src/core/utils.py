@@ -8,8 +8,12 @@ from datetime import datetime
 
 def get_user_from_token(headers):
     try:
-        token = str(headers[Params.auth]).split(' ')[1]  # String is in format `Token <authtoken>`
-        user = Token.objects.get(key=token).user
+        split = str(headers[Params.auth]).split(' ')
+        bearer, token = split[0], split[1]  # String is in format `Bearer <authtoken>`
+        print(bearer, token)
+        if str(bearer).strip() != "Bearer":
+            return None
+        user = Token.objects.get(key=token.strip()).user
         return user
     except (KeyError, Token.DoesNotExist) as e:
         return None

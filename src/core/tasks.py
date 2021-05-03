@@ -13,6 +13,6 @@ def add(x, y):
 
 
 @task(name="upload_single_image_task")
-def upload_single_image_task(data: ImageSerializer):
+def upload_single_image_task(img_url):
     logger.info(upload_single_image_task.__name__)
-    data.save()
+    print("celery_task", img_url)
