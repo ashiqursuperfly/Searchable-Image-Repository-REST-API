@@ -1,5 +1,6 @@
+from django.db import models
 from rest_framework import serializers
-from models import *
+from .models import *
 
 
 class ImageSerializer(serializers.ModelSerializer):
@@ -11,3 +12,5 @@ class ImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Image
         fields = '__all__'
+
+

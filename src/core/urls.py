@@ -6,5 +6,6 @@ app_name = 'api'
 
 urlpatterns = [
     path('api-token-auth', obtain_auth_token),
-    path('index', index)
+    path('image/', upload_single_image),
+    path('images', get_all_images),
 ]

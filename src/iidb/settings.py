@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_celery_results',
-    'drf_yasg2',
+    'drf_spectacular',
     'rest_framework',
     'rest_framework.authtoken',
     'core'
@@ -53,7 +53,8 @@ INSTALLED_APPS = [
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
-    ]
+    ],
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema'
 }
 
 MIDDLEWARE = [
@@ -152,6 +153,14 @@ CELERY_RESULT_BACKEND = 'django-db'
 CELERY_CACHE_BACKEND = 'django-cache'
 CELERY_RESULT_BACKEND_DB = f'db+mysql+pymysql://{os.environ.get("MYSQL_USER")}:{os.environ.get("MYSQL_PASSWORD")}@db/{os.environ.get("MYSQL_DATABASE")}'
 CELERY_BROKER_URL = f'amqp://{os.environ.get("RABBITMQ_DEFAULT_USER")}:{os.environ.get("RABBITMQ_DEFAULT_PASS")}@rabbit//'
+
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'IIDB API :)',
+    'DESCRIPTION': 'Dare to Leap xD',
+    'VERSION': '0.0.1',
+    'COMPONENT_SPLIT_REQUEST': True
+}
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
