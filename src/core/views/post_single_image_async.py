@@ -16,7 +16,7 @@ from ..tasks import upload_single_image_task
             Params.img: serializers.FileField()
         }
     ),
-    responses=OpenApiResponse.single_image_response
+    responses=OpenApiResponse.single_image_task_response
 )
 @parser_classes([MultiPartParser])
 @api_view(['POST'])

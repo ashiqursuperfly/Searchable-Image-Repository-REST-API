@@ -6,3 +6,8 @@ from .models import *
 @admin.register(Image)
 class ImageAdmin(admin.ModelAdmin):
     list_display = ['img', 'owner']
+
+
+@admin.register(ImageCategory)
+class ImageCategoryAdmin(admin.ModelAdmin):
+    list_display = ['name']

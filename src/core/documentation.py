@@ -8,39 +8,39 @@ from drf_spectacular.types import OpenApiTypes
 class ErrorMsg:
 
     @staticmethod
-    def invalid_content_type(param, ext=""):
+    def invalid_content_type(param, ext=''):
         return f'expected request content-type {param} ' + ext
 
     @staticmethod
-    def deserialization_failure(ext=""):
+    def deserialization_failure(ext=''):
         return 'deserialization failed ' + ext
 
     @staticmethod
-    def unknown_error(ext=""):
+    def unknown_error(ext=''):
         return 'unknown error ' + ext
 
     @staticmethod
-    def invalid_or_missing_token(ext=""):
+    def invalid_or_missing_token(ext=''):
         return 'Token invalid/unavailable in header ' + ext
 
     @staticmethod
-    def firebase_phone_auth_failed(ext=""):
+    def firebase_phone_auth_failed(ext=''):
         return 'phone_number verification failed in server ' + ext
 
     @staticmethod
-    def obj_creation_failure(ext=""):
+    def obj_creation_failure(ext=''):
         return 'Could not create object(s) ' + ext
 
     @staticmethod
-    def already_exists(param, ext=""):
+    def already_exists(param, ext=''):
         return f'object {param} already exists ' + ext
 
     @staticmethod
-    def missing_fields(param, ext=""):
+    def missing_fields(param, ext=''):
         return f'field(s) missing in request {param} ' + ext
 
     @staticmethod
-    def does_not_exist(ext=""):
+    def does_not_exist(ext=''):
         return f'object(s) does not exist ' + ext
 
 
@@ -72,36 +72,67 @@ def error_response(msg=ErrorMsg.unknown_error(), code=status.HTTP_404_NOT_FOUND)
 
 
 class OpenApiParams:
-    authorization = OpenApiParameter(name=Params.auth, location=OpenApiParameter.HEADER, type=OpenApiTypes.STR, description="Expected Format:- Bearer {authtoken}")
+    authorization = OpenApiParameter(name=Params.auth, location=OpenApiParameter.HEADER, type=OpenApiTypes.STR, description='Expected Format:- Bearer {authtoken}')
 
 
 class OpenApiResponse:
+
+    signup_response = {
+        200: inline_serializer(
+            name='SignupResponse',
+            fields={
+                'detail': serializers.CharField(),
+                'content': serializers.CharField()
+            }
+        )
+    }
+
+    image_category_list_response = {
+        200: inline_serializer(
+            name='ImageCategoryListResponse',
+            fields={
+                'detail': serializers.CharField(),
+                'content': ImageCategorySerializer(many=True)
+            }
+        )
+    }
+
     image_list_response = {
         200: inline_serializer(
-            name="ImageListResponse",
+            name='ImageListResponse',
             fields={
-                "detail": serializers.CharField(),
-                "content": ImageSerializer(many=True)
+                'detail': serializers.CharField(),
+                'content': ImageSerializer(many=True)
             }
         )
     }
 
     single_image_response = {
         200: inline_serializer(
-            name="SingleImageResponse",
+            name='SingleImageResponse',
             fields={
-                "detail": serializers.CharField(),
-                "content": ImageSerializer()
+                'detail': serializers.CharField(),
+                'content': ImageSerializer()
             }
         )
     }
 
-    signup_response = {
+    single_image_task_response = {
         200: inline_serializer(
-            name="SignupResponse",
+            name='SingleImageUploadTaskResponse',
             fields={
-                "detail": serializers.CharField(),
-                "content": ImageSerializer(many=True)
+                'detail': serializers.CharField(),
+                'content': ImageSerializer()
+            }
+        )
+    }
+
+    image_list_task_response = {
+        200: inline_serializer(
+            name='ImageListUploadTaskResponse',
+            fields={
+                'detail': serializers.CharField(),
+                'content': serializers.ListField(child=serializers.CharField())
             }
         )
     }
