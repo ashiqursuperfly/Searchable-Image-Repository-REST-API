@@ -20,7 +20,7 @@ from ..tasks import upload_single_image_task
 )
 @parser_classes([MultiPartParser])
 @api_view(['POST'])
-def post_single_image_fast(request):
+def post_single_image_async(request):
     response = get_response_model()
     user = get_user_from_token(request.headers)
 
