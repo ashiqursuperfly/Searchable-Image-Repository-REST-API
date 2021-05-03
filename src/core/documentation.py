@@ -51,6 +51,7 @@ class Params:
     error = 'error'
     auth = 'auth'
     img = 'img'
+    images = 'images'
     user = 'user'
     username = 'username'
     password = 'password'

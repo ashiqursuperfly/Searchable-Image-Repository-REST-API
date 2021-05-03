@@ -4,7 +4,7 @@ from celery.decorators import task
 from celery import shared_task
 from celery.utils.log import get_task_logger
 from .utils import upload_s3
-
+from django.core.files.storage import FileSystemStorage
 
 logger = get_task_logger(__name__)
 
@@ -25,7 +25,8 @@ def upload_single_image_task(filename: str, filepath: str, owner_id: int):
         image_data.img.name = s3_key
         image_data.owner = get_user_model().objects.get(id=owner_id)
         image_data.save()
-
+        fs = FileSystemStorage()
+        fs.delete(filepath)
         return ImageSerializer.serialize(data=image_data)
     else:
         return None
