@@ -7,6 +7,6 @@ app_name = 'api'
 urlpatterns = [
     path('signup', signup),
     path('api-token-auth', obtain_auth_token),
-    path('image/', upload_single_image),
+    path('image/', post_single_image),
     path('images', get_all_images),
 ]
