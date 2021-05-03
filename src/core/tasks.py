@@ -1,8 +1,10 @@
 from __future__ import absolute_import, unicode_literals
-from celery import shared_task
 from .serializers import *
 from celery.decorators import task
+from celery import shared_task
 from celery.utils.log import get_task_logger
+from .utils import upload_s3
+
 
 logger = get_task_logger(__name__)
 
@@ -12,7 +14,18 @@ def add(x, y):
     return x + y
 
 
-@task(name="upload_single_image_task")
-def upload_single_image_task(img_url):
+@task(name="single file upload task")
+def upload_single_image_task(filename: str, filepath: str, owner_id: int):
     logger.info(upload_single_image_task.__name__)
-    print("celery_task", img_url)
+    s3_key = Image.S3_DIR + '/' + filename
+    res = upload_s3(filepath, s3_key)
+
+    if res:
+        image_data = Image()
+        image_data.img.name = s3_key
+        image_data.owner = get_user_model().objects.get(id=owner_id)
+        image_data.save()
+
+        return ImageSerializer.serialize(data=image_data)
+    else:
+        return None
