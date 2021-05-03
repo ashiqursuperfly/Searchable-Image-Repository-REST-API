@@ -77,32 +77,31 @@ class OpenApiParams:
 class OpenApiResponse:
     image_list_response = {
         200: inline_serializer(
-            name="image list response",
+            name="ImageListResponse",
             fields={
                 "detail": serializers.CharField(),
                 "content": ImageSerializer(many=True)
             }
         )
     }
+
     single_image_response = {
         200: inline_serializer(
-            name="OK",
+            name="SingleImageResponse",
             fields={
                 "detail": serializers.CharField(),
                 "content": ImageSerializer()
             }
-        ),
-        400: inline_serializer(
-            name="Unauthorized",
+        )
+    }
+
+    signup_response = {
+        200: inline_serializer(
+            name="SignupResponse",
             fields={
-                "detail": serializers.CharField()
+                "detail": serializers.CharField(),
+                "content": ImageSerializer(many=True)
             }
-        ),
-        401: inline_serializer(
-            name="bad request",
-            fields={
-                "detail": serializers.CharField()
-            }
-        ),
+        )
     }
 

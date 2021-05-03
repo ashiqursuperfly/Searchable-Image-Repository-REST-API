@@ -14,3 +14,12 @@ class ImageSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class UserSerializer(serializers.ModelSerializer):
+
+    @staticmethod
+    def serialize(data, is_list=False):
+        return UserSerializer(data, many=is_list).data
+
+    class Meta:
+        model = get_user_model()
+        fields = ['username', 'password']
