@@ -36,12 +36,12 @@ def upload_single_image_task(
 
         if country_code:
             image_data.country = Country(code=country_code)
+        image_data.save() # need to save first before setting many to many field
+
         if categories:
             categories = str(categories).split(',')  # categories come as comma separated ids e.g: 1,2
+            image_data.categories.set(categories)  # assigning a list of ids sets the many to many relation
 
-        image_data.categories = categories  # assigning a list of ids sets the many to many relation
-
-        image_data.save()
         fs = FileSystemStorage()
         fs.delete(filepath)
         return ImageSerializer.serialize(data=image_data)
