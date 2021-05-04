@@ -3,7 +3,6 @@ from rest_framework import status
 from rest_framework.response import Response
 from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiExample, inline_serializer
 from drf_spectacular.types import OpenApiTypes
-from django_countries.serializer_fields import CountryField
 
 
 class ErrorMsg:
@@ -46,19 +45,25 @@ class ErrorMsg:
 
 
 class Params:
-    owner = 'owner'
-    detail = 'detail'
-    content = 'content'
-    error = 'error'
-    auth = 'auth'
-    img = 'img'
-    images = 'images'
+    id = 'id'
     user = 'user'
     username = 'username'
     password = 'password'
-    id = 'id'
-    content_type = 'Content-Type'
+
+    owner = 'owner'
+    description = 'description'
+    country = 'country'
+    category = 'category'
+    categories = 'categories'
+
+    content = 'content'
+    auth = 'auth'
+    img = 'img'
+    images = 'images'
     date_modified = 'date_modified'
+
+    detail = 'detail'
+    error = 'error'
 
 
 def get_response_model(detail='success', content=None):
@@ -74,6 +79,17 @@ def error_response(msg=ErrorMsg.unknown_error(), code=status.HTTP_404_NOT_FOUND)
 
 class OpenApiParams:
     authorization = OpenApiParameter(name=Params.auth, location=OpenApiParameter.HEADER, type=OpenApiTypes.STR, description='Expected Format:- Bearer {authtoken}')
+
+
+# class OpenApiRequest:
+#
+#     single_image_request = inline_serializer(
+#         name="SingleImageUploadRequest",
+#         fields={
+#             Params.descriptoin
+#             Params.img: serializers.FileField()
+#         }
+#     )
 
 
 class OpenApiResponse:
@@ -93,7 +109,7 @@ class OpenApiResponse:
             name='CountryListResponse',
             fields={
                 'detail': serializers.CharField(),
-                'content': serializers.ListField(child=CountryField(country_dict=True))
+                'content': serializers.ListField(child=CountryFieldSerializer(country_dict=True))
             }
         )
     }

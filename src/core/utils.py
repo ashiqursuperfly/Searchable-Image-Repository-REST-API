@@ -7,6 +7,13 @@ import boto3
 import os
 
 
+def get_safe_value_from_dict(data, key):
+    if key in data:
+        return data[key]
+    else:
+        return None
+
+
 def util_upload_single_image_task(filename: str, filepath: str, owner_id: int):
     s3_key = Image.S3_DIR + '/' + filename
     res = upload_s3(filepath, s3_key)

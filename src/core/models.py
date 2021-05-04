@@ -19,15 +19,15 @@ class Image(models.Model):
 
     img = models.FileField(upload_to=S3_DIR)
     owner = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='images')
-    description = models.CharField(max_length=512, help_text='what best describes your image in short')
+    description = models.CharField(max_length=512, help_text='tell us something in short that best describe your image(mandatory)')
     country = CountryField(null=True, blank=True)
-    category = models.ManyToManyField(ImageCategory, related_name='images', blank=True, help_text='list of categories')
+    categories = models.ManyToManyField(ImageCategory, related_name='images', blank=True)
 
     date_added = models.DateTimeField(editable=False)
     date_modified = models.DateTimeField(editable=True)
 
     def __str__(self):
-        return str(self.img) + '-' + str(self.owner.name)
+        return str(self.img) + '-' + str(self.owner)
 
     def save(self, *args, **kwargs):
         if self.id:

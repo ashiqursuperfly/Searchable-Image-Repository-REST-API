@@ -10,12 +10,7 @@ from ..tasks import upload_single_image_task
     parameters=[
         OpenApiParams.authorization
     ],
-    request=inline_serializer(
-        name="Bulk File Upload Request",
-        fields={
-            Params.images: serializers.ListField(child=serializers.FileField())
-        }
-    ),
+    request=ImageSerializerIn(many=True),
     responses=OpenApiResponse.image_list_task_response
 )
 @parser_classes([MultiPartParser])

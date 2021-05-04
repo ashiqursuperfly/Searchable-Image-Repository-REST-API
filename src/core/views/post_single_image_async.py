@@ -1,24 +1,19 @@
-from django.http import QueryDict
-from rest_framework.decorators import api_view, permission_classes, parser_classes, authentication_classes
-from rest_framework.parsers import MultiPartParser
-from ..utils import *
 from django.core.files.storage import FileSystemStorage
+from rest_framework.decorators import api_view, parser_classes
+from rest_framework.parsers import FormParser
+
 from ..tasks import upload_single_image_task
+from ..utils import *
 
 
 @extend_schema(
     parameters=[
         OpenApiParams.authorization
     ],
-    request=inline_serializer(
-        name="Single File Upload Request",
-        fields={
-            Params.img: serializers.FileField()
-        }
-    ),
+    request=ImageSerializerIn(),
     responses=OpenApiResponse.single_image_task_response
 )
-@parser_classes([MultiPartParser])
+@parser_classes([FormParser, ])
 @api_view(['POST'])
 def post_single_image_async(request):
     response = get_response_model()
@@ -31,14 +26,22 @@ def post_single_image_async(request):
         return error_response(ErrorMsg.invalid_content_type("multipart/form-data found" + request.content_type), status.HTTP_400_BAD_REQUEST)
 
     try:
+
+        if Params.img not in request.FILES or Params.description not in request.data:
+            return error_response(ErrorMsg.missing_fields(f'{Params.img} and {Params.description} are mandatory'))
+
         img_file = request.FILES[Params.img]
+        description = get_safe_value_from_dict(request.data, Params.description)
+        country_code = get_safe_value_from_dict(request.data, Params.country)
+        categories = get_safe_value_from_dict(request.data, Params.categories)
+
+        print('categories', type(categories), categories)
 
         fs = FileSystemStorage()
         filename = fs.save(img_file.name, img_file)
         uploaded_file_url = fs.path(filename)
 
-        t = upload_single_image_task.delay(filename, uploaded_file_url, user.id)
-        # t = util_upload_single_image_task(filename, uploaded_file_url, user.id)
+        t = upload_single_image_task.delay(filename, uploaded_file_url, user.id, description, country_code, categories)
         response[Params.content] = str(t)
 
         return Response(response)

@@ -5,16 +5,16 @@
 - docker-compose installed on ubuntu
 
 ### TODO
-- add ssh and security steps to production [priority]
-- entry data from agrobot previous app [priority]
-- explore django bulk data upload package [priority]
-- crop issue should also have an image file with it :/
+- pagination all images api
+- query params for image search api [height, width, keyword, location]
+- similar image search
+- get my images
 
 #### First Deploy Workflow
 - connect to ec2 instance using ssh
 - install docker and docker-compose on ec2 instance (run `deploy-scripts/install-docker-and-docker-compose.sh`)
 - install git
-- setup ssh for github profile that contains source code
+- setup ssh for GitHub profile that contains source code
 - git clone source code
 - update all .env file variables (e.g: ALLOWED_HOSTS should be according to the ec2 instance's public dns)
 - make sure you are in master branch
@@ -40,3 +40,7 @@
 - docker-compose down -v
 ##### check if nginx .conf file is OK
 - sudo nginx -t
+##### Celery
+- celery --help
+- celery -A django_project_name worker -l info [initiates celery worker for project with log level info]
+- celery results task_id 
