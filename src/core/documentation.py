@@ -43,6 +43,10 @@ class ErrorMsg:
     def does_not_exist(ext=''):
         return f'object(s) does not exist ' + ext
 
+    @staticmethod
+    def bad_request(ext=''):
+        return f'bad request ' + ext
+
 
 class Params:
     id = 'id'
@@ -55,6 +59,8 @@ class Params:
     country = 'country'
     category = 'category'
     categories = 'categories'
+
+    meta = 'meta'
 
     content = 'content'
     auth = 'auth'
@@ -70,7 +76,7 @@ def get_response_model(detail='success', content=None):
     return {Params.detail: detail, Params.content: content}
 
 
-def error_response(msg=ErrorMsg.unknown_error(), code=status.HTTP_404_NOT_FOUND):
+def error_response(msg=ErrorMsg.unknown_error(), code=status.HTTP_400_BAD_REQUEST):
     response = get_response_model()
     response[Params.detail] = msg
 

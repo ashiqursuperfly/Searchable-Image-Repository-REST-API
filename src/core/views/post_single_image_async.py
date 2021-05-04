@@ -25,17 +25,14 @@ def post_single_image_async(request):
     if not str(request.content_type).startswith("multipart/form-data"):
         return error_response(ErrorMsg.invalid_content_type("multipart/form-data found" + request.content_type), status.HTTP_400_BAD_REQUEST)
 
+    if Params.img not in request.FILES or Params.description not in request.data:
+        return error_response(ErrorMsg.missing_fields(f'{Params.img} and {Params.description} are mandatory'), status.HTTP_400_BAD_REQUEST)
+
     try:
-
-        if Params.img not in request.FILES or Params.description not in request.data:
-            return error_response(ErrorMsg.missing_fields(f'{Params.img} and {Params.description} are mandatory'))
-
         img_file = request.FILES[Params.img]
         description = get_safe_value_from_dict(request.data, Params.description)
         country_code = get_safe_value_from_dict(request.data, Params.country)
         categories = get_safe_value_from_dict(request.data, Params.categories)
-
-        print('categories', type(categories), categories)
 
         fs = FileSystemStorage()
         filename = fs.save(img_file.name, img_file)

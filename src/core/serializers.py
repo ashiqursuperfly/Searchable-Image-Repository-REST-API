@@ -35,6 +35,13 @@ class ImageSerializerIn(ImageSerializer):
         exclude = ['owner', 'date_modified']
 
 
+class ImageMetaSerializer(ImageSerializer):
+
+    class Meta:
+        model = Image
+        exclude = ['img', 'owner', 'date_modified']
+
+
 class UserSerializer(serializers.ModelSerializer):
 
     @staticmethod
@@ -44,3 +51,14 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = get_user_model()
         fields = ['username', 'password']
+
+
+class MultiImageRequestSerializer(serializers.Serializer):
+    images = serializers.ListField(child=serializers.FileField())
+    meta = serializers.ListField(child=ImageMetaSerializer(), help_text='size of this list must be either exactly 1 or exactly the number of images')
+
+    def update(self, instance, validated_data):
+        pass
+
+    def create(self, validated_data):
+        pass

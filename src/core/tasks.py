@@ -22,7 +22,7 @@ def upload_single_image_task(
     owner_id: int,
     description: str,
     country_code: str = None,
-    categories=None
+    comma_separated_category_ids: str = None  # not a list just a comma separated string
 ):
     logger.info(upload_single_image_task.__name__)
     s3_key = Image.S3_DIR + '/' + filename
@@ -38,8 +38,9 @@ def upload_single_image_task(
             image_data.country = Country(code=country_code)
         image_data.save() # need to save first before setting many to many field
 
-        if categories:
-            categories = str(categories).split(',')  # categories come as comma separated ids e.g: 1,2
+        if comma_separated_category_ids:
+            categories = comma_separated_category_ids.split(',')
+            categories = [str(c).strip() for c in categories]
             image_data.categories.set(categories)  # assigning a list of ids sets the many to many relation
 
         fs = FileSystemStorage()
