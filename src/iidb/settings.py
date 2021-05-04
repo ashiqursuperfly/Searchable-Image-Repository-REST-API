@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_celery_results',
+    'django_countries',
     'rest_framework',
     'rest_framework.authtoken',
     'drf_spectacular',

@@ -5,6 +5,7 @@ from rest_framework.authtoken.views import obtain_auth_token
 app_name = 'core'
 
 urlpatterns = [
+    path('country', get_all_countries),
     path('signup', signup),
     path('api-token-auth', obtain_auth_token),
     path('image/categories', get_all_categories),

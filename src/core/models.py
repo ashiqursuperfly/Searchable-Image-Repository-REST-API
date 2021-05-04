@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth import get_user_model
+from django_countries.fields import CountryField
 
 
 class ImageCategory(models.Model):
@@ -19,7 +20,8 @@ class Image(models.Model):
     img = models.FileField(upload_to=S3_DIR)
     owner = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='images')
     description = models.CharField(max_length=512, help_text='what best describes your image in short')
-    category = models.ManyToManyField(ImageCategory, related_name='images', blank=True)
+    country = CountryField(null=True, blank=True)
+    category = models.ManyToManyField(ImageCategory, related_name='images', blank=True, help_text='list of categories')
 
     date_added = models.DateTimeField(editable=False)
     date_modified = models.DateTimeField(editable=True)

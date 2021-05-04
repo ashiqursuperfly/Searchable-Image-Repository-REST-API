@@ -3,6 +3,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiExample, inline_serializer
 from drf_spectacular.types import OpenApiTypes
+from django_countries.serializer_fields import CountryField
 
 
 class ErrorMsg:
@@ -83,6 +84,16 @@ class OpenApiResponse:
             fields={
                 'detail': serializers.CharField(),
                 'content': serializers.CharField()
+            }
+        )
+    }
+
+    country_list_response = {
+        200: inline_serializer(
+            name='CountryListResponse',
+            fields={
+                'detail': serializers.CharField(),
+                'content': serializers.ListField(child=CountryField(country_dict=True))
             }
         )
     }

@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import *
+from django_countries.serializers import CountryFieldMixin
 
 
 class ImageCategorySerializer(serializers.ModelSerializer):
@@ -13,7 +14,7 @@ class ImageCategorySerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class ImageSerializer(serializers.ModelSerializer):
+class ImageSerializer(CountryFieldMixin, serializers.ModelSerializer):
 
     @staticmethod
     def serialize(data, is_list=False):
