@@ -17,7 +17,7 @@ def add(x, y):
 
 @task(name="single file upload task")
 def upload_single_image_task(
-    filename: str,
+    s3_key: str,
     filepath: str,
     owner_id: int,
     description: str,
@@ -25,7 +25,6 @@ def upload_single_image_task(
     comma_separated_category_ids: str = None  # not a list just a comma separated string
 ):
     logger.info(upload_single_image_task.__name__)
-    s3_key = Image.S3_DIR + '/' + filename
     res = upload_s3(filepath, s3_key)
 
     if res:

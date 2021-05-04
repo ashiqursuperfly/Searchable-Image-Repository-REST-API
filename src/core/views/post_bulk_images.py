@@ -41,7 +41,7 @@ def post_bulk_images_async(request):
     meta = '[' + meta + ']'
     meta = json.loads(meta)
 
-    if len(request.FILES.getlist(Params.images)) != len(meta):
+    if len(request.FILES.getlist(Params.images)) != len(meta) and len(meta) != 1:
         return error_response(ErrorMsg.bad_request('length of images and meta must be same'), status.HTTP_400_BAD_REQUEST)
 
     try:
@@ -50,24 +50,28 @@ def post_bulk_images_async(request):
         i = 0
         fs = FileSystemStorage()
         for img_file in img_files:
-            description = get_safe_value_from_dict(meta[i], Params.description)
 
+            file_meta = meta[0] if len(meta) == 1 else meta[i]
+
+            description = get_safe_value_from_dict(file_meta, Params.description)
             if description is None:
-                t_ids.append(ErrorMsg.missing_fields(Params.description, ext=f'Upload Aborted. File={img_file.name} Index={i}'))
+                t_ids.append(ErrorMsg.missing_fields(Params.description, ext=f'Upload Aborted. file={img_file.name} index={i}'))
                 i += 1
                 continue
 
             filename = fs.save(img_file.name, img_file)
             uploaded_file_url = fs.path(filename)
 
-            country = get_safe_value_from_dict(meta[i], Params.country)
-            categories = get_safe_value_from_dict(meta[i], Params.categories)
+            country = get_safe_value_from_dict(file_meta, Params.country)
+            categories = get_safe_value_from_dict(file_meta, Params.categories)
 
             if categories:
                 categories = str(categories)[1:-1]
 
-            t = upload_single_image_task.delay(filename, uploaded_file_url, user.id, description, country, categories)
-            t_ids.append(str(t))
+            s3_key = Image.generate_s3_key(filename)
+            t = upload_single_image_task.delay(s3_key, uploaded_file_url, user.id, description, country, categories)
+            t_ids.append({str(t): s3_key})
+
             i += 1
 
         response[Params.content] = t_ids

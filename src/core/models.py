@@ -2,7 +2,8 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth import get_user_model
 from django_countries.fields import CountryField
-
+from django.template.defaultfilters import slugify
+import hashlib
 
 class ImageCategory(models.Model):
     name = models.CharField(max_length=255, blank=False, null=False)
@@ -19,7 +20,8 @@ class Image(models.Model):
 
     img = models.FileField(upload_to=S3_DIR)
     owner = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='images')
-    description = models.CharField(max_length=512, help_text='tell us something in short that best describe your image(mandatory)')
+    description = models.CharField(max_length=512,
+                                   help_text='tell us something in short that best describe your image(mandatory)')
     country = CountryField(null=True, blank=True)
     categories = models.ManyToManyField(ImageCategory, related_name='images', blank=True)
 
@@ -37,3 +39,9 @@ class Image(models.Model):
             self.date_modified = timezone.now()
 
         super(Image, self).save(*args, **kwargs)
+
+    @staticmethod
+    def generate_s3_key(filename: str):
+        slug = slugify(filename)
+        hashed = int(hashlib.sha256(filename.encode('utf-8')).hexdigest(), 16) % 10 ** 8
+        return Image.S3_DIR + '/' + (str(hashed) + '_' + slug)

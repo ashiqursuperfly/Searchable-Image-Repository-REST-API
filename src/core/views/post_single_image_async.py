@@ -38,8 +38,10 @@ def post_single_image_async(request):
         filename = fs.save(img_file.name, img_file)
         uploaded_file_url = fs.path(filename)
 
-        t = upload_single_image_task.delay(filename, uploaded_file_url, user.id, description, country_code, categories)
-        response[Params.content] = str(t)
+        s3_key = Image.generate_s3_key(filename)
+
+        t = upload_single_image_task.delay(s3_key, uploaded_file_url, user.id, description, country_code, categories)
+        response[Params.content] = {str(t): s3_key}
 
         return Response(response)
 
