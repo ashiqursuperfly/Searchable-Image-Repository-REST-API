@@ -12,4 +12,5 @@ urlpatterns = [
     path('image', post_single_image_async),
     path('image/bulk', post_bulk_images_async),
     path('images', get_all_images),
+    path('task-result/<str:task_id>', get_task_result)
 ]

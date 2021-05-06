@@ -9,7 +9,7 @@ def revert(user_data):
 
 @extend_schema(
     request=UserSerializer,
-    responses=OpenApiResponse.single_image_response
+    responses=OpenApiResponse.signup_response
 )
 @api_view(['POST'])
 def signup(request):
