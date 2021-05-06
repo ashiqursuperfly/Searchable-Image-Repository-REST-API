@@ -11,14 +11,14 @@ services:
       - "15672:15672"  # here, we can access rabbitmq management plugin
     env_file:
       - .debug.env
-
+  
   db:
-    image: mysql:5.7
+    image: postgres:12.5
     ports:
-      - "3306:3306"
+      - "5432:5432"
     restart: always
     volumes:
-      - mysql_development_data_volume:/var/lib/mysql
+      - db_dev_volume:/var/lib/postgresql/data/
     env_file:
       - .debug.env
 
@@ -29,7 +29,7 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - development_static_data:/vol/web
+      - static_data_dev_volume:/vol/web
     depends_on:
       - db
       - rabbit
@@ -45,7 +45,7 @@ services:
     build:
       context: ./proxy_development
     volumes:
-      - development_static_data:/vol/static
+      - static_data_dev_volume:/vol/static
     restart: always
     ports:
       - "443:443"
@@ -54,5 +54,5 @@ services:
       - app
 
 volumes:
-  development_static_data:
-  mysql_development_data_volume:
+  static_data_dev_volume:
+  db_dev_volume:

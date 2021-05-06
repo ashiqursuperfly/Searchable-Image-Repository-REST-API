@@ -98,19 +98,13 @@ if DEBUG and not os.environ.get("MYSQL_DATABASE"):
     }
 else:
     DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'NAME': os.environ.get("MYSQL_DATABASE"),
-            'USER': os.environ.get("MYSQL_USER"),
-            'PASSWORD': os.environ.get("MYSQL_PASSWORD"),
-            'HOST': 'db',  # docker-compose service name 'db' resolves to host name 'db'
-            'PORT': 3306,
-            'OPTIONS': {
-                'charset': 'utf8mb4',
-                'init_command': 'ALTER DATABASE '
-                                + os.environ.get("MYSQL_DATABASE")
-                                + ' CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci'
-            },
+        "default": {
+            "ENGINE": 'django.db.backends.postgresql',
+            "NAME": os.environ.get("POSTGRES_DB"),
+            "USER": os.environ.get("POSTGRES_USER"),
+            "PASSWORD": os.environ.get("POSTGRES_PASSWORD"),
+            "HOST": 'db',
+            "PORT": 5432,
         }
     }
 
@@ -152,7 +146,7 @@ CELERY_CACHE_BACKEND = 'django-cache'
 CELERY_TIMEZONE = "Asia/Dhaka"
 CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_TIME_LIMIT = 30 * 60
-CELERY_RESULT_BACKEND_DB = f'db+mysql+pymysql://{os.environ.get("MYSQL_USER")}:{os.environ.get("MYSQL_PASSWORD")}@db/{os.environ.get("MYSQL_DATABASE")}'
+# CELERY_RESULT_BACKEND_DB = f'db+mysql+pymysql://{os.environ.get("MYSQL_USER")}:{os.environ.get("MYSQL_PASSWORD")}@db/{os.environ.get("MYSQL_DATABASE")}'
 CELERY_BROKER_URL = f'amqp://{os.environ.get("RABBITMQ_DEFAULT_USER")}:{os.environ.get("RABBITMQ_DEFAULT_PASS")}@rabbit//'
 CELERY_TASK_RESULT_EXPIRES = 18000
 
