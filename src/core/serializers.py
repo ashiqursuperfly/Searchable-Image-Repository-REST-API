@@ -61,7 +61,7 @@ class ImageSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class ImageSerializerIn(ImageSerializer):
+class SingleImageRequestSerializerIn(ImageSerializer):
     class Meta:
         model = Image
         exclude = ['owner', 'date_modified']

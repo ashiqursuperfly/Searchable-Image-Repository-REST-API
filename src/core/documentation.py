@@ -128,7 +128,7 @@ class OpenApiResponse:
             name='ImageListResponse',
             fields={
                 'detail': serializers.CharField(),
-                'content': ImageSerializer(many=True)
+                'content': ImageSerializerWithAllDetails(many=True)
             }
         )
     }
@@ -138,7 +138,7 @@ class OpenApiResponse:
             name='SingleImageResponse',
             fields={
                 'detail': serializers.CharField(),
-                'content': ImageSerializer()
+                'content': ImageSerializerWithAllDetails()
             }
         )
     }
@@ -148,7 +148,7 @@ class OpenApiResponse:
             name='SingleImageUploadTaskResponse',
             fields={
                 'detail': serializers.CharField(),
-                'content': ImageSerializer()
+                'content': serializers.CharField()
             }
         )
     }

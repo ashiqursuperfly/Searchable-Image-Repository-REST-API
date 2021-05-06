@@ -5,6 +5,7 @@ from django_countries.fields import CountryField
 from django.template.defaultfilters import slugify
 import hashlib
 
+
 class ImageCategory(models.Model):
     name = models.CharField(max_length=255, blank=False, null=False)
 
