@@ -3,6 +3,7 @@ from .models import *
 from django_countries.serializer_fields import CountryField as CountryFieldSerializer
 # from django_countries.serializers import CountryFieldMixin
 from django_celery_results.models import TaskResult
+from .full_text_search_model import FullTextSearchModel
 
 
 class TaskResultSerializer(serializers.ModelSerializer):
@@ -71,3 +72,25 @@ class MultiImageRequestSerializer(serializers.Serializer):
 
     def create(self, validated_data):
         pass
+
+
+class FullTextSearchModelSerializer(serializers.Serializer):
+    phrase = serializers.CharField(allow_blank=True, allow_null=True, default=None)
+    keywords = serializers.ListField(child=serializers.CharField(), allow_empty=True, allow_null=True, default=None)
+    country_name_or_code = serializers.CharField(allow_null=True, allow_blank=True, default=None)
+
+    def update(self, instance, validated_data):
+        pass
+
+    def create(self, validated_data):
+
+        def get_safe_value_from_dict(data, key):
+            if key in data:
+                return data[key]
+            else:
+                return None
+
+        phrase = get_safe_value_from_dict(validated_data, 'phrase')
+        country = get_safe_value_from_dict(validated_data, 'country_name_or_code')
+        keywords = get_safe_value_from_dict(validated_data, 'keywords')
+        return FullTextSearchModel(phrase=phrase, country_name_or_code=country, keywords=keywords)

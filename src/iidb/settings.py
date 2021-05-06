@@ -89,7 +89,7 @@ WSGI_APPLICATION = 'iidb.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-if DEBUG and not os.environ.get("MYSQL_DATABASE"):
+if DEBUG and not os.environ.get("POSTGRES_DB"):
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',

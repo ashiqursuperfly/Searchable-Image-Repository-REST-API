@@ -61,6 +61,7 @@ class Params:
     categories = 'categories'
 
     meta = 'meta'
+    name = 'name'
 
     content = 'content'
     auth = 'auth'
@@ -85,17 +86,9 @@ def error_response(msg=ErrorMsg.unknown_error(), code=status.HTTP_400_BAD_REQUES
 
 class OpenApiParams:
     authorization = OpenApiParameter(name=Params.auth, location=OpenApiParameter.HEADER, type=OpenApiTypes.STR, description='Expected Format:- Bearer {authtoken}')
-
-
-# class OpenApiRequest:
-#
-#     single_image_request = inline_serializer(
-#         name="SingleImageUploadRequest",
-#         fields={
-#             Params.descriptoin
-#             Params.img: serializers.FileField()
-#         }
-#     )
+    # phrase = OpenApiParameter(name='phrase', location=OpenApiParameter.QUERY, type=OpenApiTypes.STR)
+    # country_or_code = OpenApiParameter(name='country_or_code', location=OpenApiParameter.QUERY, type=OpenApiTypes.STR)
+    # keywords = OpenApiParameter(name='keywords', location=OpenApiParameter.QUERY, type=OpenApiTypes.STR)
 
 
 class OpenApiResponse:
