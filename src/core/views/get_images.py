@@ -3,6 +3,7 @@ from rest_framework.decorators import api_view
 from django.contrib.postgres.search import SearchVector, SearchRank
 from django.db.models import Value
 
+
 @extend_schema(
     responses=OpenApiResponse.image_list_response
 )
@@ -41,10 +42,7 @@ def full_text_search(request):
             )
         ).filter(rank__gte=0.006).order_by('-rank')
 
-        for item in results:
-            print(item.rank)
-
-        response[Params.content] = ImageSerializer.serialize(data=results, is_list=True)
+        response[Params.content] = ImageSerializerWithAllDetails.serialize(data=results, is_list=True)
     else:
         response[Params.content] = 'Please Provide at least one of the fields'
 

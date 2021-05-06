@@ -6,6 +6,28 @@ from django_celery_results.models import TaskResult
 from .full_text_search_model import FullTextSearchModel
 
 
+class UserSerializer(serializers.ModelSerializer):
+
+    @staticmethod
+    def serialize(data, is_list=False):
+        return UserSerializer(data, many=is_list).data
+
+    class Meta:
+        model = get_user_model()
+        fields = ['username', 'password']
+
+
+class UsernameSerializer(serializers.ModelSerializer):
+
+    @staticmethod
+    def serialize(data, is_list=False):
+        return UsernameSerializer(data, many=is_list).data
+
+    class Meta:
+        model = get_user_model()
+        fields = ['username']
+
+
 class TaskResultSerializer(serializers.ModelSerializer):
     @staticmethod
     def serialize(data, is_list=False):
@@ -51,15 +73,18 @@ class ImageMetaSerializer(ImageSerializer):
         exclude = ['img', 'owner', 'date_modified']
 
 
-class UserSerializer(serializers.ModelSerializer):
+class ImageSerializerWithAllDetails(serializers.ModelSerializer):
+    country = CountryFieldSerializer(country_dict=True)
+    categories = ImageCategorySerializer(many=True)
+    owner = UsernameSerializer()
 
     @staticmethod
     def serialize(data, is_list=False):
-        return UserSerializer(data, many=is_list).data
+        return ImageSerializerWithAllDetails(data, many=is_list).data
 
     class Meta:
-        model = get_user_model()
-        fields = ['username', 'password']
+        model = Image
+        fields = '__all__'
 
 
 class MultiImageRequestSerializer(serializers.Serializer):
