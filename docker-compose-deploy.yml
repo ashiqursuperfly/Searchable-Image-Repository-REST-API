@@ -41,7 +41,7 @@ services:
 
   proxy:
     build:
-      context: ./proxy_development
+      context: ./proxy
     volumes:
       - static_data_prod_volume:/vol/static
     restart: always

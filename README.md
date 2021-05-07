@@ -6,7 +6,7 @@
 
 ### TODO
 - get my images
-- image resize
+- image url based manipulation
 
 #### First Deploy Workflow
 - connect to ec2 instance using ssh
