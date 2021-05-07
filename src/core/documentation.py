@@ -101,7 +101,7 @@ class OpenApiResponse:
             name='SignupResponse',
             fields={
                 'detail': serializers.CharField(),
-                'content': serializers.CharField()
+                'content': UserSerializer()
             }
         )
     }

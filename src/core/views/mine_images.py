@@ -6,7 +6,7 @@ from ..utils import *
     parameters=[OpenApiParams.authorization],
     responses=OpenApiResponse.single_image_task_response
 )
-@api_view(['DELETE'])
+@api_view(['GET'])
 def get_my_images(request):
     response = get_response_model()
     user = get_user_from_token(request.headers)
@@ -37,6 +37,7 @@ def delete_my_image(request, image_id: int):
             return error_response('Unauthorized, content does not belong to this user.', status.HTTP_401_UNAUTHORIZED)
 
         response[Params.content] = ImageSerializerWithAllDetails.serialize(item[0])
+        item[0].delete()
         return Response(response)
 
     return error_response(ErrorMsg.does_not_exist(), status.HTTP_422_UNPROCESSABLE_ENTITY)
