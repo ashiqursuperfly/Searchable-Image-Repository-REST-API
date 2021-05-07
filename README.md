@@ -34,13 +34,13 @@
 - images are stored in **AWS S3** storage
 - images are served through **AWS Cloudfront CDN**
 - **URL based Image Manipulation** is available through an **AWS Lambda** function
-- served through **nginx** on an **AWS EC2** instance. [Deployed Here](http://18.220.183.110/api/doc)
+- served through **nginx** on an **AWS EC2** instance. [Deployed Here](http://ec2-18-220-183-110.us-east-2.compute.amazonaws.com/api/doc)
 
 
 ### API Documentation
-<a href="http://18.220.183.110/api/doc"><img src="https://raw.githubusercontent.com/swagger-api/swagger.io/wordpress/images/assets/SWU-logo-clr.png" width="200"></a>
+<a href="http://ec2-18-220-183-110.us-east-2.compute.amazonaws.com/api/doc"><img src="https://raw.githubusercontent.com/swagger-api/swagger.io/wordpress/images/assets/SWU-logo-clr.png" width="200"></a>
 
-This API documentation is **partial** and only intended to explain some endpoints in detail. Find the **full** **Swagger UI** documentation available here: [**Click Here**](http://18.220.183.110/api/doc)
+This API documentation is **partial** and only intended to explain some endpoints in detail. Find the **full** **Swagger UI** documentation available here: [**Click Here**](http://ec2-18-220-183-110.us-east-2.compute.amazonaws.com/api/doc)
 
 ### Getting an Authentication Token
 #### **`POST`** **api/signup**
@@ -284,7 +284,7 @@ POSTGRES_USER=anything
 POSTGRES_PASSWORD=anything
 POSTGRES_DB=anything
 ```
-The API is deployed for demonstration here [http://18.220.183.110/api/doc](http://18.220.183.110/api/doc) so, it is of course not necessary to run the project locally in order to test out the features. You can easily use the **Swagger UI** to try out the endpoints.
+The API is deployed for demonstration here [http://ec2-18-220-183-110.us-east-2.compute.amazonaws.com/api/doc](http://ec2-18-220-183-110.us-east-2.compute.amazonaws.com/api/doc) so, it is of course not necessary to run the project locally in order to test out the features. You can easily use the **Swagger UI** to try out the endpoints.
 
 #### TODO
 - mention image resizing example somewhere
