@@ -11,6 +11,7 @@
     - [Search](#search)
         - Full Text Search
         - Image Search
+    - [Fetching Async Task Results](#fetching-async-task-results)  
     - [Error Handling](#error-handling)
 - [**`Local Installation Guidelines`**](#local-installation-guidelines)
 
@@ -81,6 +82,73 @@ Example **HTTP 200** Response:
 }
 ```
 This `token` can be used as the `bearer` token in the http `authorization` header to authenticate some non-public endpoints.
+### Upload Image(s)
+#### **`POST`** **api/images**
+**ContentType** of this request must be **multipart/form-data** . This is general for all endpoints accepting an image file binary.
+
+Header:
+```yml
+auth: Bearer <token>
+```
+Request Body:
+```json
+{
+  "img": <image_file_binary>,
+  "country": "2-digit-country-code", # use the GET /api/country endpoint for a list of options
+  "description": "image caption",
+  "categories": [
+    <category_ids> # use the GET /api/images/categories endpoint for a list of options
+  ]
+}
+```
+Example **HTTP 200** Response:
+```json
+{
+  "detail": "You request is being processed. You can check the status of your request using the /task-result/{task_id} endpoint",
+  "content": {
+    "<task_id>": "https://d24fj9qq8rdx7g.cloudfront.net/iidb/bojack-horseman-png" # image url when the upload will be completed
+  }
+}
+```
+In the process of uploading to a storage bucket, image features are also generated from the image which is used for image searching. Clients do not need to wait for all this, the API returns a task_id assigned to this image upload task. Clients implementing this can easily query the task_id **(GET /api/task-result/{task_id})** to check if the upload is complete.
+#### **`POST`** **api/images/bulk**
+**ContentType** of this request must be **multipart/form-data** . This is general for all endpoints accepting an image file binary.
+
+Header:
+```yml
+auth: Bearer <token>
+```
+Request Body:
+```json
+{
+  "images": [
+    <image_file_binary>
+  ],
+  "meta": [
+    {
+      "country": "2-digit-country-code", # use the GET /api/country endpoint for a list of options,
+      "description": "image caption",
+      "categories": [
+        <category_ids> # use the GET /api/images/categories endpoint for a list of options
+      ]
+    }
+  ]
+}
+```
+The number of items in the **`meta`** array can be either **exactly 1** or **exactly the number of items in `images` array**. In the first case, the single meta properties are applied to all the images in the bulk. In the latter case, meta properties are assigned to the corresponding indexed image in the `images` array. e.g: **meta[i]** is assigned to **images[i]**.
+
+Example **HTTP 200** Response:
+```json
+{
+  "detail": "You request is being processed. You can check the status of your request using the /task-result/{task_id} endpoint",
+  "content": [
+    {
+      "<task_id>": "https://d24fj9qq8rdx7g.cloudfront.net/iidb/bojack-horseman-png" # image url when the upload will be completed
+    }
+  ]
+}
+```
+The response is similar to the single upload api. However, in this case returns a task_id for each image.
 ### Search
 #### **`POST`** **api/images/full-text-search**
 Request Body:
@@ -123,8 +191,28 @@ Example **HTTP 200** Response:
   ]
 }
 ```
-#### **`POST`** **api/images/full-text-search**
+#### **`POST`** **api/images/image-search**
+**ContentType** of this request must be **multipart/form-data** . This is general for all endpoints accepting an image file binary.
 
+Request Body:
+```json
+{
+  "img": <image_file_binary>,
+  "phrase": "string",
+  "keywords": [
+    "string"
+  ],
+  "country_name_or_code": "string"
+}
+```
+Example **HTTP 200** Response:
+```json
+{
+  "detail": "You request is being processed. You can check the status of your request using the /task-result/{task_id} endpoint",
+  "content": "<task_id>"
+}
+```
+Image Searching can take a while, since it needs to compare the queried image's **ORB Descriptors**. Therefore, this API returns a task_id assigned to this image search task. Clients implementing this can easily query the task_id **(GET /api/task-result/{task_id})** to check if the searching is complete and also, fetch the search results.
 
 ### Local Installation Guidelines
 The project is fully dockerized, so it is very easy to start up the required containers from the docker-compose.yml file in the project root.
