@@ -25,7 +25,7 @@ class Image(models.Model):
     country = CountryField(null=True, blank=True)
     categories = models.ManyToManyField(ImageCategory, related_name='images', blank=True)
 
-    orb_descriptor = models.TextField(blank=True)
+    orb_descriptor = models.BinaryField()
 
     date_added = models.DateTimeField(editable=False)
     date_modified = models.DateTimeField(editable=True)

@@ -75,6 +75,7 @@ def post_bulk_images_async(request):
             i += 1
 
         response[Params.content] = t_ids
+        response[Params.detail] = 'You request is being processed. You can check the status of your request using the /task-result/{task_id} endpoint'
 
         return Response(response)
 

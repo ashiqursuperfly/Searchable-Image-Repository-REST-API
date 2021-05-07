@@ -42,6 +42,7 @@ def post_single_image_async(request):
 
         t = upload_single_image_task.delay(s3_key, uploaded_file_url, user.id, description, country_code, categories)
         response[Params.content] = {str(t): s3_key}
+        response[Params.detail] = 'You request is being processed. You can check the status of your request using the /task-result/{task_id} endpoint'
 
         return Response(response)
 
