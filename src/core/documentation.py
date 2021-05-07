@@ -60,6 +60,8 @@ class Params:
     category = 'category'
     categories = 'categories'
 
+    fulltext_search_model = 'fulltext_search_model'
+
     meta = 'meta'
     name = 'name'
 
