@@ -5,7 +5,7 @@
 - [**`Implementation Details`**](#implementation-details)
 - [**`API Documentation`**](#api-documentation)
     - [Getting an Authentication Token](#getting-an-authentication-token)
-    - [Upload Image(s)](#upload-image(s))
+    - [Upload Image(s)](#upload-images)
         - Single Image Upload
         - Bulk Image Upload
     - [Search](#search)
@@ -44,7 +44,7 @@ This API documentation is **partial** and only intended to explain some endpoint
 
 ### Getting an Authentication Token
 #### **`POST`** **api/signup**
-Hitting the endpoint with the following request body would register a user with this email. This endpoint can be used only once with the same username and email. Check **`POST`** **api/api-token-auth** to retrieve a registered user's auth token.
+Hitting the endpoint with the following request body would register a user with this email. This endpoint can be used only once with the same username and email. Check [**`POST`** **api/api-token-auth**](#post-apiapi-token-auth) to retrieve a registered user's auth token.
 
 Request Body:
 ```json
@@ -110,7 +110,7 @@ Example **HTTP 200** Response:
   }
 }
 ```
-In the process of uploading to a storage bucket, image features are also generated from the image which is used for image searching. Clients do not need to wait for all this, the API returns a task_id assigned to this image upload task. Clients implementing this can easily query the task_id **(GET /api/task-result/{task_id})** to check if the upload is complete.
+In the process of uploading to a storage bucket, image features are also generated from the image which is used for image searching. Clients do not need to wait for all this, the API returns a task_id assigned to this image upload task. Clients implementing this can easily query the task_id [**`GET /api/task-result/{task_id}`**](#get-apitask-resulttask_id)** to check if the upload is complete.
 #### **`POST`** **api/images/bulk**
 **ContentType** of this request must be **multipart/form-data** . This is general for all endpoints accepting an image file binary.
 
@@ -140,7 +140,7 @@ The number of items in the **`meta`** array can be either **exactly 1** or **exa
 Example **HTTP 200** Response:
 ```json
 {
-  "detail": "You request is being processed. You can check the status of your request using the /task-result/{task_id} endpoint",
+  "detail": "You request is being processed. You can check the status of your request using the GET /task-result/{task_id} endpoint",
   "content": [
     {
       "<task_id>": "https://d24fj9qq8rdx7g.cloudfront.net/iidb/bojack-horseman-png" # image url when the upload will be completed
@@ -212,8 +212,57 @@ Example **HTTP 200** Response:
   "content": "<task_id>"
 }
 ```
-Image Searching can take a while, since it needs to compare the queried image's **ORB Descriptors**. Therefore, this API returns a task_id assigned to this image search task. Clients implementing this can easily query the task_id **(GET /api/task-result/{task_id})** to check if the searching is complete and also, fetch the search results.
+Image Searching can take a while, since it needs to compare the queried image's **ORB Descriptors**. Therefore, this API returns a task_id assigned to this image search task. Clients implementing this can easily query the task_id [**`GET /api/task-result/{task_id}`**](#get-apitask-resulttask_id)** to check if the searching is complete and also, fetch the search results.
+### Fetching Async Task Results
+#### **`GET /api/task-result/{task_id}`**
+`task_id` (a path parameter) value can be found in the image search / upload api responses.
 
+Example **HTTP 200** Response:
+```json
+{
+  "detail": "success",
+  "content": [
+    {
+      "status": "SUCCESS",
+      "result": "{\"id\": 28, \"country\": {\"code\": \"BD\", \"name\": \"Bangladesh\"}, \"img\": \"https://d24fj9qq8rdx7g.cloudfront.net/iidb/35499451_wp2084610-bojack-horseman-wallpaperspng\", \"description\": \"Bojack Horseman\", \"date_added\": \"2021-05-07T17:05:08.350136Z\", \"date_modified\": \"2021-05-07T17:05:08.350149Z\", \"owner\": 2, \"categories\": [9, 18]}",
+      "date_created": "2021-05-07T17:05:07.634318Z",
+      "date_done": "2021-05-07T17:05:08.369649Z"
+    }
+  ]
+}
+```
+The field `result` is a serialized json string of the result objects (single image, array of uploaded images, array of search result images etc)
+### Error Handling
+All responses follow a generic format both for error and non-error responses. The `detail` field returns a detailed error message of the http error triggered. The `content` field can be ignored for error responses.
+```json
+{
+  "detail": "string",
+  "content": "string"
+}
+```
+Common http errors handled are,
+
+**401 UNAUTHORIZED**
+```json
+{
+  "detail": "Token invalid/unavailable in header ",
+  "content": null
+}
+```
+** 422 UNPROCESSABLE ENTITY **
+```json
+{
+  "detail": "Fields missing in request \"username\", \"password\"",
+  "content": null
+}
+```
+** 405 METHOD NOT ALLOWED **
+```json
+{
+  "detail": "Method \"POST\" not allowed.",
+  "content": null
+}
+```
 ### Local Installation Guidelines
 The project is fully dockerized, so it is very easy to start up the required containers from the docker-compose.yml file in the project root.
 ```
@@ -241,3 +290,4 @@ POSTGRES_DB=anything
 - mention image resizing example somewhere
 - return better results for the image search & upload image task result
 - maybe add an api endpoint for resizing images
+- return cloudfront appended url with upload api response
