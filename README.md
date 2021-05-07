@@ -47,7 +47,7 @@ This API documentation is **partial** and only intended to explain some endpoint
 Hitting the endpoint with the following request body would register a user with this email. This endpoint can be used only once with the same username and email. Check [**`POST`** **api/api-token-auth**](#post-apiapi-token-auth) to retrieve a registered user's auth token.
 
 Request Body:
-```json
+```yml
 {
   "username": "string",
   "email": "user@example.com",
@@ -55,7 +55,7 @@ Request Body:
 }
 ```
 Example **HTTP 200** Response:
-```json
+```yml
 {
   "detail": "success",
   "content": {
@@ -68,7 +68,7 @@ Example **HTTP 200** Response:
 ```
 #### **`POST`** **api/api-token-auth**
 Request Body:
-```json
+```yml
 {
   "username": "string",
   "email": "user@example.com",
@@ -76,7 +76,7 @@ Request Body:
 }
 ```
 Example **HTTP 200** Response:
-```json
+```yml
 {
   "token": "string"
 }
@@ -91,7 +91,7 @@ Header:
 auth: Bearer <token>
 ```
 Request Body:
-```json
+```yml
 {
   "img": <image_file_binary>,
   "country": "2-digit-country-code", # use the GET /api/country endpoint for a list of options
@@ -102,7 +102,7 @@ Request Body:
 }
 ```
 Example **HTTP 200** Response:
-```json
+```yml
 {
   "detail": "You request is being processed. You can check the status of your request using the /task-result/{task_id} endpoint",
   "content": {
@@ -119,7 +119,7 @@ Header:
 auth: Bearer <token>
 ```
 Request Body:
-```json
+```yml
 {
   "images": [
     <image_file_binary>
@@ -138,7 +138,7 @@ Request Body:
 The number of items in the **`meta`** array can be either **exactly 1** or **exactly the number of items in `images` array**. In the first case, the single meta properties are applied to all the images in the bulk. In the latter case, meta properties are assigned to the corresponding indexed image in the `images` array. e.g: **meta[i]** is assigned to **images[i]**.
 
 Example **HTTP 200** Response:
-```json
+```yml
 {
   "detail": "You request is being processed. You can check the status of your request using the GET /task-result/{task_id} endpoint",
   "content": [
@@ -152,7 +152,7 @@ The response is similar to the single upload api. However, in this case returns 
 ### Search
 #### **`POST`** **api/images/full-text-search**
 Request Body:
-```json
+```yml
 {
   "phrase": "string",
   "keywords": [
@@ -164,7 +164,7 @@ Request Body:
 Need to provide at least one of the three fields `phrase`, `keywords`, `country_name_or_code`.
 
 Example **HTTP 200** Response:
-```json
+```yml
 {
   "detail": "success",
   "content": [
@@ -195,7 +195,7 @@ Example **HTTP 200** Response:
 **ContentType** of this request must be **multipart/form-data** . This is general for all endpoints accepting an image file binary.
 
 Request Body:
-```json
+```yml
 {
   "img": <image_file_binary>,
   "phrase": "string",
@@ -206,7 +206,7 @@ Request Body:
 }
 ```
 Example **HTTP 200** Response:
-```json
+```yml
 {
   "detail": "You request is being processed. You can check the status of your request using the /task-result/{task_id} endpoint",
   "content": "<task_id>"
@@ -218,7 +218,7 @@ Image Searching can take a while, since it needs to compare the queried image's 
 `task_id` (a path parameter) value can be found in the image search / upload api responses.
 
 Example **HTTP 200** Response:
-```json
+```yml
 {
   "detail": "success",
   "content": [
@@ -234,7 +234,7 @@ Example **HTTP 200** Response:
 The field `result` is a serialized json string of the result objects (single image, array of uploaded images, array of search result images etc)
 ### Error Handling
 All responses follow a generic format both for error and non-error responses. The `detail` field returns a detailed error message of the http error triggered. The `content` field can be ignored for error responses.
-```json
+```yml
 {
   "detail": "string",
   "content": "string"
@@ -243,21 +243,21 @@ All responses follow a generic format both for error and non-error responses. Th
 Common http errors handled are,
 
 **401 UNAUTHORIZED**
-```json
+```yml
 {
   "detail": "Token invalid/unavailable in header ",
   "content": null
 }
 ```
 ** 422 UNPROCESSABLE ENTITY **
-```json
+```yml
 {
   "detail": "Fields missing in request \"username\", \"password\"",
   "content": null
 }
 ```
 ** 405 METHOD NOT ALLOWED **
-```json
+```yml
 {
   "detail": "Method \"POST\" not allowed.",
   "content": null
