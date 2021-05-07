@@ -53,6 +53,7 @@ class Params:
     user = 'user'
     username = 'username'
     password = 'password'
+    email = 'email'
 
     owner = 'owner'
     description = 'description'

@@ -8,7 +8,14 @@ def revert(user_data):
 
 
 @extend_schema(
-    request=UserSerializer,
+    request=inline_serializer(
+        name='SignupRequest',
+        fields={
+            Params.username: serializers.CharField(),
+            Params.email: serializers.EmailField(),
+            Params.password: serializers.CharField()
+        }
+    ),
     responses=OpenApiResponse.signup_response
 )
 @api_view(['POST'])
@@ -21,12 +28,17 @@ def signup(request):
         return error_response(ErrorMsg.missing_fields(Params.username), status.HTTP_422_UNPROCESSABLE_ENTITY)
     if Params.password not in user_data:
         return error_response(ErrorMsg.missing_fields(Params.password), status.HTTP_422_UNPROCESSABLE_ENTITY)
+    if Params.email not in user_data:
+        return error_response(ErrorMsg.missing_fields(Params.email), status.HTTP_422_UNPROCESSABLE_ENTITY)
+    if not is_email_valid(user_data[Params.email]):
+        return error_response('Invalid Email', status.HTTP_422_UNPROCESSABLE_ENTITY)
 
-    user_data = {Params.username: user_data[Params.username], Params.password: user_data[Params.password]}
+    user_data = {Params.email: user_data[Params.email], Params.username: user_data[Params.username],
+                 Params.password: user_data[Params.password]}
     is_user_created = False
 
     try:
-        user = get_user_model().objects.create_user(username=user_data[Params.username], password=user_data[Params.password])
+        user = get_user_model().objects.create_user(username=user_data[Params.username],password=user_data[Params.password], email=user_data[Params.email])
         is_user_created = True
         token, created = Token.objects.get_or_create(user=user)
 
@@ -40,4 +52,3 @@ def signup(request):
         return error_response(ErrorMsg.obj_creation_failure(str(e)), status.HTTP_422_UNPROCESSABLE_ENTITY)
     except IntegrityError as e:
         return error_response(ErrorMsg.already_exists('user', str(e)), status.HTTP_422_UNPROCESSABLE_ENTITY)
-
