@@ -10,7 +10,7 @@ from ..utils import *
     parameters=[
         OpenApiParams.authorization
     ],
-    request=SingleImageRequestSerializerIn(),
+    request=SingleImageRequestSerializer(),
     responses=OpenApiResponse.single_image_task_response
 )
 @parser_classes([FormParser, ])
