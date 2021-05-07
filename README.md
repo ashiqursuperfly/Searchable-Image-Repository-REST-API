@@ -5,10 +5,8 @@
 - docker-compose installed on ubuntu
 
 ### TODO
-- pagination all images api
-- query params for image search api [height, width, keyword, location]
-- similar image search
 - get my images
+- image resize
 
 #### First Deploy Workflow
 - connect to ec2 instance using ssh

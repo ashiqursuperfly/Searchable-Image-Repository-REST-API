@@ -35,7 +35,7 @@ class TaskResultSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = TaskResult
-        fields = ['task_id', 'status', 'result', 'date_created', 'date_done']
+        fields = ['status', 'result', 'date_created', 'date_done']
 
 
 class ImageCategorySerializer(serializers.ModelSerializer):

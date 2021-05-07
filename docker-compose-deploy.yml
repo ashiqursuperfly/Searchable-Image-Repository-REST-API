@@ -1,35 +1,49 @@
+# version of docker-compose syntax
 version: '3.7'
 
 services:
 
-  db:
-    image: mysql:5.7
+  rabbit:
+    image: rabbitmq:3.7-management
+    restart: always
     ports:
-      - "3306:3306"
+      - "5672:5672"
+      - "15672:15672"
+    env_file:
+      - .live.env
+  
+  db:
+    image: postgres:13.2
+    ports:
+      - "5432:5432"
     restart: always
     volumes:
-      - mysql_production_data_volume:/var/lib/mysql
+      - db_prod_volume:/var/lib/postgresql/data/
     env_file:
       - .live.env
 
   app:
+    restart: always
     build:
       context: .
     ports:
       - "8000:8000"
     volumes:
-      - production_static_data:/vol/web
-    restart: always
-    env_file:
-      - .live.env
+      - static_data_prod_volume:/vol/web
     depends_on:
       - db
+      - rabbit
+    links:
+      - rabbit
+    env_file:
+      - .live.env
+
 
   proxy:
     build:
-      context: ./proxy
+      context: ./proxy_development
     volumes:
-      - production_static_data:/vol/static
+      - static_data_prod_volume:/vol/static
     restart: always
     ports:
       - "80:80"
@@ -37,6 +51,5 @@ services:
       - app
 
 volumes:
-  production_static_data:
-  mysql_production_data_volume:
-
+  static_data_prod_volume:
+  db_prod_volume:
