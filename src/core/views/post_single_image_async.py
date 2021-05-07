@@ -23,10 +23,10 @@ def post_single_image_async(request):
         return error_response(ErrorMsg.invalid_or_missing_token(), status.HTTP_401_UNAUTHORIZED)
 
     if not str(request.content_type).startswith("multipart/form-data"):
-        return error_response(ErrorMsg.invalid_content_type("multipart/form-data found" + request.content_type), status.HTTP_400_BAD_REQUEST)
+        return error_response(ErrorMsg.invalid_content_type("multipart/form-data found" + request.content_type), status.HTTP_422_UNPROCESSABLE_ENTITY)
 
     if Params.img not in request.FILES or Params.description not in request.data:
-        return error_response(ErrorMsg.missing_fields(f'{Params.img} and {Params.description} are mandatory'), status.HTTP_400_BAD_REQUEST)
+        return error_response(ErrorMsg.missing_fields(f'{Params.img} and {Params.description} are mandatory'), status.HTTP_422_UNPROCESSABLE_ENTITY)
 
     try:
         img_file = request.FILES[Params.img]
@@ -46,4 +46,4 @@ def post_single_image_async(request):
         return Response(response)
 
     except ValueError as e:
-        return error_response(ErrorMsg.unknown_error(str(e)), status.HTTP_400_BAD_REQUEST)
+        return error_response(ErrorMsg.unknown_error(str(e)), status.HTTP_422_UNPROCESSABLE_ENTITY)

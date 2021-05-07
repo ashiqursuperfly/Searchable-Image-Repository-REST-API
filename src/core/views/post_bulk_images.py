@@ -31,10 +31,10 @@ def post_bulk_images_async(request):
         return error_response(ErrorMsg.invalid_or_missing_token(), status.HTTP_401_UNAUTHORIZED)
 
     if not str(request.content_type).startswith("multipart/form-data"):
-        return error_response(ErrorMsg.invalid_content_type("multipart/form-data found" + request.content_type), status.HTTP_400_BAD_REQUEST)
+        return error_response(ErrorMsg.invalid_content_type("multipart/form-data found" + request.content_type), status.HTTP_422_UNPROCESSABLE_ENTITY)
 
     if Params.images not in request.FILES or Params.meta not in request.data:
-        return error_response(ErrorMsg.missing_fields(f'{Params.img} and {Params.meta} are mandatory'), status.HTTP_400_BAD_REQUEST)
+        return error_response(ErrorMsg.missing_fields(f'{Params.img} and {Params.meta} are mandatory'), status.HTTP_422_UNPROCESSABLE_ENTITY)
 
     meta = str(request.data[Params.meta])
     meta = "".join(meta.splitlines())
@@ -42,7 +42,7 @@ def post_bulk_images_async(request):
     meta = json.loads(meta)
 
     if len(request.FILES.getlist(Params.images)) != len(meta) and len(meta) != 1:
-        return error_response(ErrorMsg.bad_request('length of images and meta must be same'), status.HTTP_400_BAD_REQUEST)
+        return error_response(ErrorMsg.bad_request('length of images and meta must be same'), status.HTTP_422_UNPROCESSABLE_ENTITY)
 
     try:
         img_files = request.FILES.getlist(Params.images)
@@ -79,4 +79,4 @@ def post_bulk_images_async(request):
         return Response(response)
 
     except ValueError as e:
-        return error_response(ErrorMsg.unknown_error(str(e)), status.HTTP_400_BAD_REQUEST)
+        return error_response(ErrorMsg.unknown_error(str(e)), status.HTTP_422_UNPROCESSABLE_ENTITY)

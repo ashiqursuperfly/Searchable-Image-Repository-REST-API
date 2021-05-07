@@ -11,7 +11,7 @@ urlpatterns = [
     path('image/categories', get_all_categories),
     path('image', post_single_image_async),
     path('image/bulk', post_bulk_images_async),
-    path('images', get_all_images),
     path('images/full-text-search', full_text_search),
+    path('images/image-search', image_search),
     path('task-result/<str:task_id>', get_task_result)
 ]

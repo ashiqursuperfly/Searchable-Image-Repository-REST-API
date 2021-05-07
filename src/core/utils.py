@@ -2,9 +2,21 @@ from .documentation import *
 from rest_framework.authtoken.models import Token
 from django.utils.timezone import get_current_timezone
 from datetime import datetime
+from skimage.transform import resize
 from botocore.exceptions import ClientError
 import boto3
 import os
+import cv2
+
+
+def generate_features_from_image(img_path: str):
+    img_cv = cv2.imread(img_path, cv2.IMREAD_COLOR)
+    img_cv = resize(img_cv, (500, int((img_cv.shape[1] * 500) / img_cv.shape[0])), order=0, anti_aliasing=True, preserve_range=True).astype('uint8')
+
+    orb = cv2.ORB_create()
+    kp, desc = orb.detectAndCompute(img_cv, None)
+
+    return desc.dumps() if desc is not None else ""
 
 
 def get_safe_value_from_dict(data, key):
@@ -70,4 +82,3 @@ def get_date(date_str, dformat='%Y-%m-%d'):
 
 def str2bool(v):
     return v.lower() in ("true", "1")
-

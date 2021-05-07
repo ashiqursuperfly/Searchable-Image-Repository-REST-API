@@ -21,10 +21,11 @@ class Image(models.Model):
 
     img = models.FileField(upload_to=S3_DIR)
     owner = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='images')
-    description = models.CharField(max_length=512,
-                                   help_text='tell us something in short that best describe your image(mandatory)')
+    description = models.CharField(max_length=512, help_text='tell us something in short that best describe your image(mandatory)')
     country = CountryField(null=True, blank=True)
     categories = models.ManyToManyField(ImageCategory, related_name='images', blank=True)
+
+    orb_descriptor = models.TextField(blank=True)
 
     date_added = models.DateTimeField(editable=False)
     date_modified = models.DateTimeField(editable=True)

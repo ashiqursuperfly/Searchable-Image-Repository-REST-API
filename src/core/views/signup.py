@@ -18,9 +18,9 @@ def signup(request):
     user_data = dict(request.data)
 
     if Params.username not in user_data:
-        return error_response(ErrorMsg.missing_fields(Params.username), status.HTTP_400_BAD_REQUEST)
+        return error_response(ErrorMsg.missing_fields(Params.username), status.HTTP_422_UNPROCESSABLE_ENTITY)
     if Params.password not in user_data:
-        return error_response(ErrorMsg.missing_fields(Params.password), status.HTTP_400_BAD_REQUEST)
+        return error_response(ErrorMsg.missing_fields(Params.password), status.HTTP_422_UNPROCESSABLE_ENTITY)
 
     user_data = {Params.username: user_data[Params.username], Params.password: user_data[Params.password]}
     is_user_created = False
@@ -37,7 +37,7 @@ def signup(request):
     except (ValueError, TypeError, KeyError) as e:
         if is_user_created:
             revert(user_data)
-        return error_response(ErrorMsg.obj_creation_failure(str(e)), status.HTTP_400_BAD_REQUEST)
+        return error_response(ErrorMsg.obj_creation_failure(str(e)), status.HTTP_422_UNPROCESSABLE_ENTITY)
     except IntegrityError as e:
-        return error_response(ErrorMsg.already_exists('user', str(e)), status.HTTP_400_BAD_REQUEST)
+        return error_response(ErrorMsg.already_exists('user', str(e)), status.HTTP_422_UNPROCESSABLE_ENTITY)
 
