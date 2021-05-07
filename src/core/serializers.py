@@ -59,18 +59,23 @@ class ImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Image
         fields = '__all__'
+        exclude = ['orb_descriptor']
 
 
-class SingleImageRequestSerializerIn(ImageSerializer):
+class SingleImageRequestSerializerIn(serializers.ModelSerializer):
+    country = CountryFieldSerializer(country_dict=True)
+
     class Meta:
         model = Image
-        exclude = ['owner', 'date_modified']
+        fields = ['img', 'country', 'description', 'categories']
 
 
-class ImageMetaSerializer(ImageSerializer):
+class ImageMetaSerializer(serializers.ModelSerializer):
+    country = CountryFieldSerializer(country_dict=True)
+
     class Meta:
         model = Image
-        exclude = ['img', 'owner', 'date_modified']
+        fields = ['country', 'description', 'categories']
 
 
 class ImageSerializerWithAllDetails(serializers.ModelSerializer):
@@ -85,6 +90,7 @@ class ImageSerializerWithAllDetails(serializers.ModelSerializer):
     class Meta:
         model = Image
         fields = '__all__'
+        exclude = ['orb_descriptor']
 
 
 class MultiImageRequestSerializer(serializers.Serializer):

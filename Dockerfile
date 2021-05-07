@@ -8,7 +8,7 @@ RUN pip install --upgrade pip
 COPY ./requirements.txt /requirements.txt
 # packages required for setting up WSGI
 RUN apt-get update
-RUN apt-get install -y --no-install-recommends gcc libc-dev python3-dev postgresql
+RUN apt-get install -y --no-install-recommends gcc libc-dev python3-opencv python3-dev postgresql
 
 RUN pip install -r /requirements.txt
 # RUN service rabbitmq-server start
