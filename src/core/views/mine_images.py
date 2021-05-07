@@ -31,7 +31,7 @@ def delete_my_image(request, image_id: int):
     if user is None:
         return error_response(ErrorMsg.invalid_or_missing_token(), status.HTTP_401_UNAUTHORIZED)
 
-    item = Image.objects.filter(id=id)
+    item = Image.objects.filter(id=image_id)
     if item:
         if item[0].owner.id is not user.id:
             return error_response('Unauthorized, content does not belong to this user.', status.HTTP_401_UNAUTHORIZED)
