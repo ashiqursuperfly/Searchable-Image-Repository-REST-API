@@ -152,7 +152,7 @@ CELERY_TASK_RESULT_EXPIRES = 18000
 
 SPECTACULAR_SETTINGS = {
     'TITLE': 'IIDB API :)',
-    'DESCRIPTION': 'This API demonstrates the features of a fully searchable (fulltext + image) image repository that handles asynchronous bulk image uploads. In order to get a bearer token check the /signup endpoint.',
+    'DESCRIPTION': 'This API demonstrates the features of a fully searchable (fulltext + image) image repository that handles asynchronous bulk image uploads.\n\nIn order to get a bearer token check the /signup endpoint.\n\nSource Code: https://github.com/ashiqursuperfly/searchable-image-repository-rest-api',
     'VERSION': '0.0.1',
     'COMPONENT_SPLIT_REQUEST': True
 }
