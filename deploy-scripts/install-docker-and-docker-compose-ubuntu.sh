@@ -6,12 +6,15 @@ set -o nounset
 IFS=$(printf '\n\t')
 
 # Docker
-sudo apt remove --yes docker docker-engine docker.io containerd runc
+# sudo apt remove --yes docker docker-engine docker.io containerd runc
 sudo apt update
-sudo apt --yes --no-install-recommends install apt-transport-https ca-certificates
-wget --quiet --output-document=- https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-sudo add-apt-repository "deb [arch=$(dpkg --print-architecture)] https://download.docker.com/linux/ubuntu $(lsb_release --codename --short) stable"
+sudo apt --yes --no-install-recommends install apt-transport-https ca-certificates curl software-properties-common
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+ echo \
+  "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
+  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 sudo apt update
+apt-cache policy docker-ce
 sudo apt --yes --no-install-recommends install docker-ce docker-ce-cli containerd.io
 sudo usermod --append --groups docker "$USER"
 sudo systemctl enable docker
