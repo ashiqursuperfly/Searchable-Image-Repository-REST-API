@@ -41,7 +41,7 @@ def post_single_image_async(request):
         s3_key = Image.generate_s3_key(filename)
 
         t = upload_single_image_task.delay(s3_key, uploaded_file_url, user.id, description, country_code, categories)
-        response[Params.content] = {str(t): s3_key}
+        response[Params.content] = {str(t): f"https://{os.environ.get('AWS_CLOUDFRONT_DOMAIN')}/{s3_key}"}
         response[Params.detail] = 'You request is being processed. You can check the status of your request using the /task-result/{task_id} endpoint'
 
         return Response(response)

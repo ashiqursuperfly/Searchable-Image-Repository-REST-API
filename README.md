@@ -249,14 +249,14 @@ Common http errors handled are,
   "content": null
 }
 ```
-** 422 UNPROCESSABLE ENTITY **
+**422 UNPROCESSABLE ENTITY**
 ```yml
 {
   "detail": "Fields missing in request \"username\", \"password\"",
   "content": null
 }
 ```
-** 405 METHOD NOT ALLOWED **
+**405 METHOD NOT ALLOWED**
 ```yml
 {
   "detail": "Method \"POST\" not allowed.",
@@ -264,11 +264,11 @@ Common http errors handled are,
 }
 ```
 ### Local Installation Guidelines
-The project is fully dockerized, so it is very easy to start up the required containers from the docker-compose.yml file in the project root.
+The project is fully dockerized, so it is very easy to start up the required containers from the docker-compose.yml file in the project root. All you need is docker and docker-compose installed in the system.
 ```
 docker-compose up --build
 ```
-However, This project requires some cloud resources like (AWS S3 file storage) in order to function properly. So, in order to run the project locally you need to have **.debug.env** file in the project root which should look like the following:
+However, This project requires some cloud resources like (AWS S3 file storage) in order to function properly. So, in order to run the project locally you need to have a **.debug.env** file in the project root which should look like the following:
 ```
 DEBUG=1
 DJANGO_APP_SECRET_KEY=anything
@@ -284,10 +284,8 @@ POSTGRES_USER=anything
 POSTGRES_PASSWORD=anything
 POSTGRES_DB=anything
 ```
-
+The API is deployed for demonstration here [http://18.220.183.110/api/doc](http://18.220.183.110/api/doc) so, it is of course not necessary to run the project locally in order to test out the features. You can easily use the **Swagger UI** to try out the endpoints.
 
 #### TODO
 - mention image resizing example somewhere
-- return better results for the image search & upload image task result
 - maybe add an api endpoint for resizing images
-- return cloudfront appended url with upload api response

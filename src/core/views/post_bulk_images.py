@@ -70,7 +70,7 @@ def post_bulk_images_async(request):
 
             s3_key = Image.generate_s3_key(filename)
             t = upload_single_image_task.delay(s3_key, uploaded_file_url, user.id, description, country, categories)
-            t_ids.append({str(t): s3_key})
+            t_ids.append({str(t): f"https://{os.environ.get('AWS_CLOUDFRONT_DOMAIN')}/{s3_key}"})
 
             i += 1
 
