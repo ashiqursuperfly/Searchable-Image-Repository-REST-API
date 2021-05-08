@@ -40,7 +40,7 @@
 ### API Documentation
 <a href="http://ec2-18-220-183-110.us-east-2.compute.amazonaws.com/api/doc"><img src="https://raw.githubusercontent.com/swagger-api/swagger.io/wordpress/images/assets/SWU-logo-clr.png" width="200"></a>
 
-This API documentation is **partial** and only intended to explain some endpoints in detail. Find the **full** **Swagger UI** documentation available here: [**Click Here**](http://ec2-18-220-183-110.us-east-2.compute.amazonaws.com/api/doc)
+This API documentation explains **some** important endpoints in detail. Find the **full** **Swagger UI** documentation available here: [**Click Here**](http://ec2-18-220-183-110.us-east-2.compute.amazonaws.com/api/doc)
 
 ### Getting an Authentication Token
 #### **`POST`** **api/signup**
