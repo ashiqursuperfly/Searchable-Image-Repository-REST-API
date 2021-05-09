@@ -2,6 +2,7 @@ from __future__ import absolute_import, unicode_literals
 
 import pickle
 import cv2
+import os
 from .serializers import *
 from celery.decorators import task
 from celery import shared_task
@@ -84,9 +85,9 @@ def image_search_task(
             similar_regions = [i for i in matches if i.distance < 50]
             match_percentage = len(similar_regions) / len(matches)
             if match_percentage > 0.05:
-                results.append({'img': str(item.img), 'match': match_percentage})
+                results.append({'img': f"https://{os.environ.get('AWS_CLOUDFRONT_DOMAIN')}/{str(item.img)}", 'match': match_percentage})
 
     fs = FileSystemStorage()
     fs.delete(query_image)
-
+    results = sorted(results, key=lambda k: k['match'], reverse=True)
     return results
