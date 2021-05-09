@@ -84,9 +84,7 @@ def image_search_task(
             similar_regions = [i for i in matches if i.distance < 50]
             match_percentage = len(similar_regions) / len(matches)
             if match_percentage > 0.05:
-                _ = ImageSerializerWithAllDetails.serialize(data=item)
-                _['match'] = match_percentage
-                results.append(_)
+                results.append({'img': str(item.img), 'match': match_percentage})
 
     fs = FileSystemStorage()
     fs.delete(query_image)
