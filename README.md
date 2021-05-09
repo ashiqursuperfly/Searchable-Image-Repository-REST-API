@@ -231,11 +231,11 @@ Example **HTTP 200** Response:
       },
       {
         "img": "https://d24fj9qq8rdx7g.cloudfront.net/iidb/19634438_5webp",
-        "match": 0.2222222222222222
+        "match": 0.54
       },
       {
         "img": "https://d24fj9qq8rdx7g.cloudfront.net/iidb/57189077_5_jyxcpm3webp",
-        "match": 0.2222222222222222
+        "match": 0.28
       }
     ]
   }
