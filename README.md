@@ -13,6 +13,7 @@
         - Image Search
     - [Fetching Async Task Results](#fetching-async-task-results)  
     - [Error Handling](#error-handling)
+- [**`URL based Image Manipulation`**](#url-based-image-manipulation)
 - [**`Local Installation Guidelines`**](#local-installation-guidelines)
 
 
@@ -263,6 +264,40 @@ Common http errors handled are,
   "content": null
 }
 ```
+### URL based Image Manipulation
+In order to resize an image url of the form: https://d24fj9qq8rdx7g.cloudfront.net/{s3-key}
+**1.** You need to create a JSON body of the form:
+```yml
+{
+  "bucket": "crop-disease-debug", # i am using the same s3 bucket as one of my other projects for now :)
+  "key": <s3-key>,
+  "edits": {
+    "resize": {
+      "width": 120,
+      "height": 120,
+      "fit": ("cover" or "contain" or "fill" or "inside" or "outside"),
+      "background": {
+        "r": 255,
+        "g": 255,
+        "b": 0,
+        "alpha": 1
+      }
+    },
+    "grayscale": true,
+    "flip": true,
+    "flop": true,
+    "negate": true,
+    "flatten": true,
+    "normalise": true,
+    "smartCrop": {
+      "padding": 12
+    }
+  }
+}
+```
+All keys under the `edits` key are optional. It all depends on the edits you want to perform to the image. There are a lot of powerful modifications (like `resize`, `grayscale`, `negate`, `add a background`, `crop`) you can do to the image just by manipulating the url.
+**2.** Now, convert the JSON body into a **BASE 64** string.
+**3.** Finally, append the base 64 string to the cloudfront base url like so: **https://d24fj9qq8rdx7g.cloudfront.net/{base-64-of-json-body}**
 ### Local Installation Guidelines
 The project is fully dockerized, so it is very easy to start up the required containers from the docker-compose.yml file in the project root. All you need is docker and docker-compose installed in the system.
 ```
