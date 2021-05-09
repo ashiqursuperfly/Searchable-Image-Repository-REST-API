@@ -29,6 +29,9 @@ class UsernameSerializer(serializers.ModelSerializer):
 
 
 class TaskResultSerializer(serializers.ModelSerializer):
+
+    result = serializers.JSONField()
+
     @staticmethod
     def serialize(data, is_list=False):
         return TaskResultSerializer(data, many=is_list).data
