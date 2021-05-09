@@ -222,17 +222,26 @@ Example **HTTP 200** Response:
 ```yml
 {
   "detail": "success",
-  "content": [
-    {
-      "status": "SUCCESS",
-      "result": "{\"id\": 28, \"country\": {\"code\": \"BD\", \"name\": \"Bangladesh\"}, \"img\": \"https://d24fj9qq8rdx7g.cloudfront.net/iidb/35499451_wp2084610-bojack-horseman-wallpaperspng\", \"description\": \"Bojack Horseman\", \"date_added\": \"2021-05-07T17:05:08.350136Z\", \"date_modified\": \"2021-05-07T17:05:08.350149Z\", \"owner\": 2, \"categories\": [9, 18]}",
-      "date_created": "2021-05-07T17:05:07.634318Z",
-      "date_done": "2021-05-07T17:05:08.369649Z"
-    }
-  ]
+  "content": {
+    "status": "SUCCESS",
+    "result": [
+      {
+        "img": "https://d24fj9qq8rdx7g.cloudfront.net/iidb/41250564_2_0mdb3d4jpeg",
+        "match": 1
+      },
+      {
+        "img": "https://d24fj9qq8rdx7g.cloudfront.net/iidb/19634438_5webp",
+        "match": 0.2222222222222222
+      },
+      {
+        "img": "https://d24fj9qq8rdx7g.cloudfront.net/iidb/57189077_5_jyxcpm3webp",
+        "match": 0.2222222222222222
+      }
+    ]
+  }
 }
 ```
-The field `result` is a serialized json string of the result objects (single image, array of uploaded images, array of search result images etc)
+The field `result` contains the result objects (single image, array of search result images etc)
 ### Error Handling
 All responses follow a generic format both for error and non-error responses. The `detail` field returns a detailed error message of the http error triggered. The `content` field can be ignored for error responses.
 ```yml
@@ -266,6 +275,7 @@ Common http errors handled are,
 ```
 ### URL based Image Manipulation
 In order to resize an image url of the form: https://d24fj9qq8rdx7g.cloudfront.net/{s3-key}
+
 **1.** You need to create a JSON body of the form:
 ```yml
 {
@@ -296,7 +306,9 @@ In order to resize an image url of the form: https://d24fj9qq8rdx7g.cloudfront.n
 }
 ```
 All keys under the `edits` key are optional. It all depends on the edits you want to perform to the image. There are a lot of powerful modifications (like `resize`, `grayscale`, `negate`, `add a background`, `crop`) you can do to the image just by manipulating the url.
+
 **2.** Now, convert the JSON body into a **BASE 64** string.
+
 **3.** Finally, append the base 64 string to the cloudfront base url like so: **https://d24fj9qq8rdx7g.cloudfront.net/{base-64-of-json-body}**
 ### Local Installation Guidelines
 The project is fully dockerized, so it is very easy to start up the required containers from the docker-compose.yml file in the project root. All you need is docker and docker-compose installed in the system.
@@ -320,7 +332,3 @@ POSTGRES_PASSWORD=anything
 POSTGRES_DB=anything
 ```
 The API is deployed for demonstration here [http://ec2-18-220-183-110.us-east-2.compute.amazonaws.com/api/doc](http://ec2-18-220-183-110.us-east-2.compute.amazonaws.com/api/doc) so, it is of course not necessary to run the project locally in order to test out the features. You can easily use the **Swagger UI** to try out the endpoints.
-
-#### TODO
-- mention image resizing example somewhere
-- maybe add an api endpoint for resizing images
