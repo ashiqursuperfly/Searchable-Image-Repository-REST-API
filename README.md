@@ -29,19 +29,19 @@
 
 ### Implementation Details
 - built using [**`Django Rest Framework`**](https://www.django-rest-framework.org/)
-- uses [**`RabbitMQ`**](https://www.rabbitmq.com/) as message broker and [**`Celery`**](https://docs.celeryproject.org/en/stable/getting-started/introduction.html) as synchronous task queue to carry out long tasks, resulting in minimal response time for bulk image upload
+- uses [**`RabbitMQ`**](https://www.rabbitmq.com/) as message broker and [**`Celery`**](https://docs.celeryproject.org/en/stable/getting-started/introduction.html) as asynchronous task queue to carry out long tasks
 - uses [**`PostgreSQL Full Text Search`**](https://www.postgresql.org/docs/13/textsearch.html) to perform full text search of images based on image meta  
-- extracts [**`ORB`**](https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_feature2d/py_orb/py_orb.html) descriptors from images and uses open cv based matcher for image search
+- extracts **`ORB`** descriptors from images and uses open cv based matcher for image search
 - images are stored in **AWS S3** storage
 - images are served through **AWS Cloudfront CDN**
 - **URL based Image Manipulation** is available through an **AWS Lambda** function
-- served through **nginx** on an **AWS EC2** instance. [Deployed Here](http://ec2-18-220-183-110.us-east-2.compute.amazonaws.com/api/doc)
+- served through **nginx** on an **AWS EC2** instance.
 
 
 ### API Documentation
-<a href="http://ec2-18-220-183-110.us-east-2.compute.amazonaws.com/api/doc"><img src="https://raw.githubusercontent.com/swagger-api/swagger.io/wordpress/images/assets/SWU-logo-clr.png" width="200"></a>
+<img src="https://raw.githubusercontent.com/swagger-api/swagger.io/wordpress/images/assets/SWU-logo-clr.png" width="200">
 
-This API documentation explains **some** important endpoints in detail. Find the **full** **Swagger UI** documentation available here: [**Click Here**](http://ec2-18-220-183-110.us-east-2.compute.amazonaws.com/api/doc)
+This API documentation explains **some** important endpoints in detail. Find the **full** **Swagger UI** documentation available here: **localhost/api/doc**
 
 ### Getting an Authentication Token
 #### **`POST`** **api/signup**
@@ -331,4 +331,3 @@ POSTGRES_USER=anything
 POSTGRES_PASSWORD=anything
 POSTGRES_DB=anything
 ```
-The API is deployed for demonstration here [http://ec2-18-220-183-110.us-east-2.compute.amazonaws.com/api/doc](http://ec2-18-220-183-110.us-east-2.compute.amazonaws.com/api/doc) so, it is of course not necessary to run the project locally in order to test out the features. You can easily use the **Swagger UI** to try out the endpoints.
