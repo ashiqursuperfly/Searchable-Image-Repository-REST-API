@@ -279,7 +279,7 @@ In order to resize an image url of the form: https://d24fj9qq8rdx7g.cloudfront.n
 **1.** You need to create a JSON body of the form:
 ```yml
 {
-  "bucket": "crop-disease-debug", # i am using the same s3 bucket as one of my other projects for now :)
+  "bucket": "s3-bucket-name",
   "key": <s3-key>,
   "edits": {
     "resize": {
