@@ -41,7 +41,7 @@
 ### API Documentation
 <img src="https://raw.githubusercontent.com/swagger-api/swagger.io/wordpress/images/assets/SWU-logo-clr.png" width="200">
 
-This API documentation explains **some** important endpoints in detail. Find the **full** **Swagger UI** documentation available here: **localhost/api/doc**
+This API documentation explains **some** important endpoints in detail. Find the **full** **Swagger UI** documentation available here: **/api/doc**
 
 ### Getting an Authentication Token
 #### **`POST`** **api/signup**
